@@ -5,9 +5,9 @@
 import { Injectable } from '@angular/core';
 
 // Models
-import { Quiz } from './models/quiz';
-import { Question } from './models/question';
-import { Answer } from './models/answer';
+import { Quiz } from './../models/quiz';
+import { Question } from './../models/question';
+import { Answer } from './../models/answer';
 
 /**
  * Stores the question being currently displayed.
