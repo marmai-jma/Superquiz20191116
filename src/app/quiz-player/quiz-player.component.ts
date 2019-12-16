@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QUIZZES } from '../data/quizzes';
 import { Answer } from '../models/answer';
-import { AnswersState } from '../quiz-state-manager.service';
+import { AnswersState, QuizStateManager } from '../quiz-state-manager.service';
 import { QuizService } from '../quiz.service';
 import { Question } from '../models/question';
 import { Quiz } from '../models/quiz';
@@ -18,31 +18,42 @@ export class QuizPlayerComponent implements OnInit {
   currentAnswers: AnswersState;
   isStarted = false;
 
-  constructor(private quizService: QuizService) { }
+  constructor(private quizService: QuizService,
+              private qsm: QuizStateManager) { }
 
   ngOnInit() {
     const quizId = 32; // Viendra de l'URL
     this.currentQuiz = this.quizService.loadQuiz(quizId);
-    this.currentQuestion = this.currentQuiz.questions[0];
-    this.currentAnswer = new Answer({ questionId: this.currentQuestion.id, multipleChoicesAllowed: false });
-    this.currentAnswers = {};
+    // définition du quiz en cours dans le quizStateManager
+    this.qsm.setQuiz(this.currentQuiz);
+
+    // Initialise la liste des réponses
+    this.currentAnswers = this.qsm.getAllAnswers();
   }
 
   startQuiz() {
     this.isStarted = true;
+    const qa = this.qsm.getFirstQA();
+    this.currentQuestion = qa.question;
+    this.currentAnswer = qa.answer;
   }
 
   // Méthode appelée à chaque fois que l'enfant émet une réponse
   saveAnswer(answer: Answer){
     // ON pourrait aussi enregistrer dans une BDD
     // Stocke la réponse reçue, avec les autres dasn une propriété de classe
-    this.currentAnswers[answer.questionId] = answer;
+    this.qsm.saveAnswer(answer);
   }
 
-  gotoPreviousQuestion(){}
+  gotoPreviousQuestion(){
+    const qa = this.qsm.getPreviousQA();
+    this.currentQuestion = qa.question;
+    this.currentAnswer = qa.answer;
+  }
 
   gotoNextQuestion(){
-    this.currentQuestion = QUIZZES[0].questions[1];
-    this.currentAnswer = new Answer({ questionId: this.currentQuestion.id, multipleChoicesAllowed: false });
+    const qa = this.qsm.getNextQA();
+    this.currentQuestion = qa.question;
+    this.currentAnswer = qa.answer;
   }
 }
