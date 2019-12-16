@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QUIZZES } from '../data/quizzes';
 import { Quiz } from '../models/quiz';
+import { QuizService } from '../quiz.service';
 
 @Component({
   selector: 'app-quiz-list',
@@ -8,11 +9,12 @@ import { Quiz } from '../models/quiz';
   styles: []
 })
 export class QuizListComponent implements OnInit {
-  quizList = QUIZZES;  // indispensable pour rendre les quizzes visibles dans le template
+  quizList : Quiz[];  // undefined
 
-  constructor() { }
+  constructor(private quizService : QuizService) { }
 
   ngOnInit() {
+    this.quizList = this.quizService.loadQuizzes();
   }
 
   public addQuiz() {
