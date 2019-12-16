@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { QUIZZES } from '../data/quizzes';
 import { Answer } from '../models/answer';
 import { AnswersState } from '../quiz-state-manager.service';
+import { QuizService } from '../quiz.service';
+import { Question } from '../models/question';
+import { Quiz } from '../models/quiz';
 
 @Component({
   selector: 'app-quiz-player',
@@ -9,15 +12,20 @@ import { AnswersState } from '../quiz-state-manager.service';
   styles: []
 })
 export class QuizPlayerComponent implements OnInit {
-  currentQuiz = QUIZZES[0];
-  currentQuestion = QUIZZES[0].questions[0];
-  currentAnswer = new Answer({ questionId: this.currentQuestion.id, multipleChoicesAllowed: false });
-  currentAnswers: AnswersState = {};
+  currentQuiz : Quiz;
+  currentQuestion : Question;
+  currentAnswer : Answer;
+  currentAnswers: AnswersState;
   isStarted = false;
 
-  constructor() { }
+  constructor(private quizService: QuizService) { }
 
   ngOnInit() {
+    const quizId = 32; // Viendra de l'URL
+    this.currentQuiz = this.quizService.loadQuiz(quizId);
+    this.currentQuestion = this.currentQuiz.questions[0];
+    this.currentAnswer = new Answer({ questionId: this.currentQuestion.id, multipleChoicesAllowed: false });
+    this.currentAnswers = {};
   }
 
   startQuiz() {
