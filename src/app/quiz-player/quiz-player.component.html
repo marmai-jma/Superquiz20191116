@@ -10,7 +10,10 @@
   <app-quiz-nav
     [quiz]="currentQuiz"
     [question]="currentQuestion"
-    [answers]="currentAnswers"></app-quiz-nav>
+    [answers]="currentAnswers"
+    (previous)="gotoPreviousQuestion()"
+    (next)="gotoNextQuestion()"
+    ></app-quiz-nav>
 
   <app-quiz-question
     [question]="currentQuestion"

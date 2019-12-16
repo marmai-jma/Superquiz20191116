@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 
 import {Question} from '../models/question';
 import {Answer} from '../models/answer';
@@ -9,7 +9,7 @@ import { Choice } from '../models/choice';
   templateUrl: './quiz-question.component.html',
   styles: []
 })
-export class QuizQuestionComponent implements OnInit {
+export class QuizQuestionComponent implements OnInit, OnChanges {
 
   @Input() question: Question;
   @Input() answer: Answer;
@@ -26,6 +26,10 @@ export class QuizQuestionComponent implements OnInit {
     this.refreshButton();
   }
 
+  ngOnChanges() { // code exécuté à chaque fosi que les "inputs" changent
+    this.isSubmitted = this.answer.isAnswered();
+    this.refreshButton();
+  }
   clickChoice(choice: Choice) {
     // Si réponse déjà soumise, ne fais rien.
     if (this.isSubmitted) {

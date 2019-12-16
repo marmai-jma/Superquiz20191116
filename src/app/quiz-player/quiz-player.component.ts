@@ -30,4 +30,11 @@ export class QuizPlayerComponent implements OnInit {
     // Stocke la réponse reçue, avec les autres dasn une propriété de classe
     this.currentAnswers[answer.questionId] = answer;
   }
+
+  gotoPreviousQuestion(){}
+
+  gotoNextQuestion(){
+    this.currentQuestion = QUIZZES[0].questions[1];
+    this.currentAnswer = new Answer({ questionId: this.currentQuestion.id, multipleChoicesAllowed: false });
+  }
 }
