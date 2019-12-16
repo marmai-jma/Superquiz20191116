@@ -24,4 +24,10 @@ export class QuizPlayerComponent implements OnInit {
     this.isStarted = true;
   }
 
+  // Méthode appelée à chaque fois que l'enfant émet une réponse
+  saveAnswer(answer: Answer){
+    // ON pourrait aussi enregistrer dans une BDD
+    // Stocke la réponse reçue, avec les autres dasn une propriété de classe
+    this.currentAnswers[answer.questionId] = answer;
+  }
 }

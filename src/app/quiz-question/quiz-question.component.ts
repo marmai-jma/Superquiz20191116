@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import {Question} from '../models/question';
 import {Answer} from '../models/answer';
@@ -13,6 +13,7 @@ export class QuizQuestionComponent implements OnInit {
 
   @Input() question: Question;
   @Input() answer: Answer;
+  @Output() submit = new EventEmitter<Answer>();
 
   isSubmitted: boolean;
   submitLabel: string;
@@ -42,6 +43,8 @@ export class QuizQuestionComponent implements OnInit {
   submitAnswer() {
     this.isSubmitted = true;
     this.refreshButton();
+    // Transmet la réponse de l'utilisateur au composant parent
+    this.submit.emit(this.answer);
   }
 
   // Met à jour le libellé et la classe du bouton "Soumettre"

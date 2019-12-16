@@ -14,6 +14,7 @@
 
   <app-quiz-question
     [question]="currentQuestion"
-    [answer]="currentAnswer"></app-quiz-question>
+    [answer]="currentAnswer"  (submit)="saveAnswer($event)"></app-quiz-question>
+
 
 </ng-template>
